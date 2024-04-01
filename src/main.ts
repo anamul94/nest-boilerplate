@@ -5,6 +5,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.setGlobalPrefix('/api/v1/');
+
   //swagger config start
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Nest Boilerplate')
