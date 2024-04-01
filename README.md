@@ -15,6 +15,17 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Feature
+
+<ul align="center">
+<li>User SignUp(Role:Optional) </li>
+<li>User SignIn</li>
+<li>User Update</li>
+<li>JWT</li>
+<li>Set role to bulk user(Admin Only)</li>
+
+</ul>
+
 ## Installation
 
 ```bash
