@@ -18,9 +18,16 @@ export class UsersService {
   }
 
   async createUser(dto: SignupDto): Promise<User> {
-    const role = await this.roleRepository.findOneBy({ id: dto.roleId });
-    if (!role) {
-      throw new BadRequestException('Role not found.');
+    const isUser = await this.userRepository.findOneBy({ email: dto.email });
+    if (isUser) {
+      throw new BadRequestException('User already exists.');
+    }
+    let role: Role;
+    if (dto.roleId) {
+      role = await this.roleRepository.findOneBy({ id: dto.roleId });
+      if (!role) {
+        throw new BadRequestException('Role not found.');
+      }
     }
 
     const { firstName, lastName, email, password } = dto;
