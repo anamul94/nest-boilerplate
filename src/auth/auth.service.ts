@@ -1,9 +1,9 @@
 import { Tokens } from './types/';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from 'src/user/users.service';
 import * as argon from 'argon2';
-import { User } from 'src/users/entities/user.entity';
+import { User } from 'src/user/entities/user.entity';
 import { SignupDto } from './dto/signup.dto';
 
 @Injectable()

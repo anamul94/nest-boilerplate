@@ -12,7 +12,7 @@ import { Tokens } from './types';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
-import { User } from 'src/users/entities';
+import { User } from 'src/user/entities';
 
 @ApiTags('Auth')
 @ApiBearerAuth()

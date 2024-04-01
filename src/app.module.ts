@@ -2,7 +2,7 @@ import { dataSourceOptions } from './../db/data-source';
 import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/user.module';
+import { UsersModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -14,5 +14,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
   ],
   providers: [AppService],
+  controllers: [],
 })
 export class AppModule {}
