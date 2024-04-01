@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Role } from './entities/role.entity';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import UserRepository from './user.repository';
-import { Role, RoleNames } from './entities';
 import { RoleRepository } from './role.repository';
 import { SignupDto } from 'src/auth/dto/signup.dto';
 
@@ -14,21 +14,29 @@ export class UsersService {
   ) {}
 
   async getRoleByName(roleName: string): Promise<Role> {
-    return this.roleRepository.findOneBy({ role: roleName });
+    return this.roleRepository.findOneBy({ roleName: roleName });
   }
 
   async createUser(dto: SignupDto): Promise<User> {
-    let roleId = null;
-    // if (dto.roleId) {
-    //   const role = await this.getRoleByName(dto.roleId);
-    //   roleId = role.id;
-    // }
+    const role = await this.roleRepository.findOneBy({ id: dto.roleId });
+    if (!role) {
+      throw new BadRequestException('Role not found.');
+    }
 
-    const newUser = await this.userRepository.save({
-      ...dto,
+    const { firstName, lastName, email, password } = dto;
+
+    const newUser = await this.userRepository.create({
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
     });
-    delete newUser.password;
-    return newUser;
+    console.log(newUser);
+    await newUser.role;
+    const savedUser = await this.userRepository.save(newUser);
+    delete savedUser.password;
+    return savedUser;
   }
 
   async findUserByEmail(email: string): Promise<User | undefined> {
@@ -37,10 +45,16 @@ export class UsersService {
 
   async findUserByEmailWithRole(email: string): Promise<User | undefined> {
     const user = await this.userRepository.findOneBy({ email: email });
+    if (!user) {
+      return undefined;
+    }
     const role = await user.role;
-    return {
-      ...user,
-      role,
-    };
+    if (role) {
+      return {
+        ...user,
+        role,
+      };
+    }
+    return user;
   }
 }

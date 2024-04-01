@@ -13,7 +13,7 @@ export class Role {
   id: Number;
 
   @Column({ type: 'enum', enum: RoleNames })
-  role: string;
+  roleName: string;
 
   // @OneToMany(() => User, (user) => user.role)
   // users: User[];
