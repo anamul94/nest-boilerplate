@@ -5,6 +5,7 @@ import { User } from './entities/user.entity';
 import UserRepository from './user.repository';
 import { RoleRepository } from './role.repository';
 import { SignupDto } from 'src/auth/dto/signup.dto';
+import { RoleUpdateDto } from './dto/role.update.dto';
 
 @Injectable()
 export class UsersService {
@@ -44,6 +45,26 @@ export class UsersService {
     const savedUser = await this.userRepository.save(newUser);
     delete savedUser.password;
     return savedUser;
+  }
+
+  async setUserRole(dto: RoleUpdateDto): Promise<User[]> {
+    const response: User[] = [];
+    const role = await this.roleRepository.findOneBy({ id: dto.roleId });
+    if (!role) {
+      throw new BadRequestException('Role not found.');
+    }
+    for (const userId of dto.userIds) {
+      const user = await this.userRepository.findOneBy({ id: userId });
+      if (!user) {
+        console.error(`User with ID ${userId} not found`);
+        continue;
+      }
+      user.role = role;
+      await this.userRepository.save(user);
+      delete user.password;
+      response.push(user);
+    }
+    return response;
   }
 
   async findUserByEmail(email: string): Promise<User | undefined> {
