@@ -21,6 +21,8 @@
 $ npm install
 ```
 
+# Copy .env-example to .env
+
 ## Running the app
 
 ```bash
@@ -39,13 +41,15 @@ $ npm run start:prod
 
 ```bash
 # generate
-$ npm run typeorm migration:generate --db/migration/<name_of_migration>
+$ npm run migration:generate db/migrations/<name_of_migration>
 
-# e2e tests
-$ npm run test:e2e
+#run
+$ npm run migration:run
 
-# test coverage
-$ npm run test:cov
+#revert
+
+$ npm run migration:revert
+
 ```
 
 ## Support
