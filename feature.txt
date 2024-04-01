@@ -1,0 +1,15 @@
+Boilerplate Phase 1: user and role crud and jwt, swagger
+Boilerplate Phase 2: forget pass with mail otp
+Boilerplate Phase 3: Google oauth
+Boilerplate Phase 4: CI/CD using github
+Boilerplate Phase 5: Docker
+
+Boilerplate Phase 2.1: hosting, ssl, cloud security, cloudflare
+
+Boilerplate Phase 3.1: Payment gateway integration of BD (Bkash, Nagad, Rocket individually)
+
+Boilerplate Phase 3.2: Payment gateway integration of Stripe and other international
+
+Boilerplate Phase 3.3: Sslcomerce type aggregator
+
+Boilerplate Phase 6: logging and monitoring
