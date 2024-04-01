@@ -23,6 +23,7 @@
 <li>User Update</li>
 <li>JWT</li>
 <li>Set role to bulk user(Admin Only)</li>
+<li>Swagger </li>
 
 </ul>
 
@@ -63,16 +64,15 @@ $ npm run migration:revert
 
 ```
 
-## Support
+## Swagger URL
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+{ip/domain}:{port}/api
+
+# Example
+
+http://localhost:8080/api
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- Author - [Anamul Haque]
+- LinkedIn - [](www.linkedin.com/in/md-anamul-haque94)
