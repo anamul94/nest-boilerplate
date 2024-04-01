@@ -5,7 +5,7 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">NestJs starter template</p>
+# <p align="center">NestJs starter template</p>
 
 </p>
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
@@ -21,11 +21,11 @@
 $ npm install
 ```
 
-# Copy .env-example to .env
-
 ## Running the app
 
 ```bash
+# Prepare .env
+$ cp .env-example .env
 # development
 $ npm run start
 
