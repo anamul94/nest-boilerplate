@@ -6,6 +6,7 @@ import UserRepository from './user.repository';
 import { RoleRepository } from './role.repository';
 import { SignupDto } from 'src/auth/dto/signup.dto';
 import { RoleUpdateDto } from './dto/role.update.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -45,6 +46,20 @@ export class UsersService {
     const savedUser = await this.userRepository.save(newUser);
     delete savedUser.password;
     return savedUser;
+  }
+
+  async updateUser(id: string, dto: UpdateUserDto): Promise<User> {
+    const user = await this.userRepository.findOneBy({ id: id });
+    if (!user) {
+      throw new BadRequestException('User not found.');
+    }
+    if (dto.firstName) user.firstName = dto.firstName;
+    if (dto.lastName) user.lastName = dto.lastName;
+    await this.userRepository.save(user);
+
+    delete user.password;
+
+    return user;
   }
 
   async setUserRole(dto: RoleUpdateDto): Promise<User[]> {
