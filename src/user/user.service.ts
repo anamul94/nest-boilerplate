@@ -57,4 +57,8 @@ export class UsersService {
     }
     return user;
   }
+
+  async getRole(): Promise<Role[]> {
+    return this.roleRepository.find();
+  }
 }

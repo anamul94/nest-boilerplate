@@ -13,6 +13,7 @@ import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
 import { User } from 'src/user/entities';
+import { Public } from './decorators';
 
 @ApiTags('Auth')
 @ApiBearerAuth()
@@ -27,6 +28,7 @@ export class AuthController {
     return this.authService.signUp(dto);
   }
 
+  @Public()
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   @ApiBody({ type: LoginDto })
