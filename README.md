@@ -68,7 +68,7 @@ $ npm run migration:revert
 
 {ip/domain}:{port}/api
 
-# Example
+Example
 
 http://localhost:8080/api
 
