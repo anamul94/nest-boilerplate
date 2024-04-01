@@ -10,7 +10,13 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAuthGuards } from 'src/auth/guards';
 import { Role, RoleNames, User } from './entities';
 import { Public } from 'src/auth/decorators';
@@ -26,17 +32,21 @@ export class UserController {
 
   @Public()
   @Get('/role')
+  @ApiOkResponse({ type: Role, isArray: true })
   getRole(): Promise<Role[]> {
     return this.UsersService.getRole();
   }
 
   @Patch()
   @ApiBody({ type: UpdateUserDto })
+  @ApiOkResponse({ type: User })
   updateUser(@Request() req, @Body() dto: UpdateUserDto): Promise<User> {
     return this.UsersService.updateUser(req.user.sub, dto);
   }
 
   @Patch('/set-role')
+  @ApiBody({ type: RoleUpdateDto })
+  @ApiOkResponse({ type: User, isArray: true })
   test(@Request() req, @Body() dto: RoleUpdateDto): Promise<User[]> {
     if (req.user.role === RoleNames.ADMIN) {
       return this.UsersService.setUserRole(dto);

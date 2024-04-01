@@ -1,3 +1,4 @@
+import { Tokens } from './types/token.type';
 import {
   Body,
   Controller,
@@ -7,9 +8,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { JwtAuthGuards, LocalAuthGuard } from './guards';
-import { Tokens } from './types';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { LocalAuthGuard } from './guards';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
 import { User } from 'src/user/entities';
@@ -23,6 +29,7 @@ export class AuthController {
 
   @Post('/signup')
   @ApiBody({ type: SignupDto })
+  @ApiOkResponse({ type: User })
   signUp(@Body() dto: SignupDto): Promise<User> {
     console.log(dto);
     return this.authService.signUp(dto);
@@ -34,11 +41,5 @@ export class AuthController {
   @ApiBody({ type: LoginDto })
   login(@Request() req): Promise<Tokens> {
     return this.authService.login(req.user);
-  }
-
-  @UseGuards(JwtAuthGuards)
-  @Get('/profile')
-  getProfile(@Request() req): any {
-    return req.user;
   }
 }
