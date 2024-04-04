@@ -10,12 +10,14 @@ import * as argon from 'argon2';
 import { User } from 'src/user/entities/user.entity';
 import { SignupDto } from './dto/signup.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { MailSender } from 'src/util/mailsend';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private mailSender: MailSender,
   ) {}
 
   async signUp(dto: SignupDto): Promise<User> {
@@ -62,5 +64,9 @@ export class AuthService {
       console.log(error);
       throw new BadRequestException();
     }
+  }
+
+  async mailSend() {
+    this.mailSender.mailSend();
   }
 }

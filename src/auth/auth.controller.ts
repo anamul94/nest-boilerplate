@@ -53,7 +53,12 @@ export class AuthController {
     @Request() req,
     @Body() dto: ResetPasswordDto,
   ): Promise<string> {
-    console.log(req.user);
     return this.authService.resetPassword(req.user.email, dto);
+  }
+
+  @Public()
+  @Post('/sendmail')
+  sendMail() {
+    this.authService.mailSend();
   }
 }

@@ -6,6 +6,7 @@ import { LocalStrategy } from './stragegies';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './stragegies/jwt.strategy';
 import { AuthController } from './auth.controller';
+import { MailSender } from 'src/util/mailsend';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { AuthController } from './auth.controller';
       signOptions: { expiresIn: process.env.JWT_EXPIRATION },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, MailSender],
   exports: [AuthService],
   controllers: [AuthController],
 })
