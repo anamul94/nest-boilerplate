@@ -104,4 +104,8 @@ export class UsersService {
   async getRole(): Promise<Role[]> {
     return this.roleRepository.find();
   }
+
+  async saveUser(user: User): Promise<User> {
+    return this.userRepository.save(user);
+  }
 }

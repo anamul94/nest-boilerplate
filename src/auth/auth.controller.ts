@@ -3,12 +3,13 @@ import {
   Body,
   Controller,
   Get,
+  Patch,
   Post,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards';
+import { JwtAuthGuards, LocalAuthGuard } from './guards';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -20,6 +21,7 @@ import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
 import { User } from 'src/user/entities';
 import { Public } from './decorators';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @ApiTags('Auth')
 @ApiBearerAuth()
@@ -41,5 +43,17 @@ export class AuthController {
   @ApiBody({ type: LoginDto })
   login(@Request() req): Promise<Tokens> {
     return this.authService.login(req.user);
+  }
+
+  @UseGuards(JwtAuthGuards)
+  @Patch('/reset-password')
+  @ApiBody({ type: ResetPasswordDto })
+  @ApiOkResponse({ type: String })
+  resetPassword(
+    @Request() req,
+    @Body() dto: ResetPasswordDto,
+  ): Promise<string> {
+    console.log(req.user);
+    return this.authService.resetPassword(req.user.email, dto);
   }
 }
