@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Patch,
   Post,
   Request,
@@ -22,6 +23,7 @@ import { SignupDto } from './dto/signup.dto';
 import { User } from 'src/user/entities';
 import { Public } from './decorators';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
 
 @ApiTags('Auth')
 @ApiBearerAuth()
@@ -57,8 +59,33 @@ export class AuthController {
   }
 
   @Public()
-  @Post('/sendmail')
-  sendMail() {
-    this.authService.mailSend();
+  @Post('/:email/forgot-password')
+  async sendMail(@Param('email') email: string) {
+    try {
+      await this.authService.genForgotPasswordOtp(email);
+      return { success: true, message: 'OTP sent successfully' };
+    } catch (error) {
+      return { success: false, message: error.message };
+    }
+  }
+
+  @Public()
+  @Post('/:email/:otp/validate-otp')
+  async validateOTP(@Param('email') email: string, @Param('otp') otp: string) {
+    try {
+      const isValid = await this.authService.validateOTP(email, otp);
+      return {
+        success: isValid,
+        message: isValid ? 'OTP is valid' : 'OTP is invalid',
+      };
+    } catch (error) {
+      return { success: false, message: error.message };
+    }
+  }
+
+  @Public()
+  @Post('/set-new-password')
+  async setNewPassword(@Body() dto: ForgotPasswordDto): Promise<string> {
+    return this.authService.setNewPassword(dto);
   }
 }

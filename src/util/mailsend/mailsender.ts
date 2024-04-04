@@ -4,7 +4,12 @@ import { MailerSend, EmailParams, Sender, Recipient } from 'mailersend';
 
 @Injectable()
 export class MailSender {
-  async mailSend() {
+  async mailSend(
+    recieptant: string,
+    client: string,
+    subject: string,
+    message: string,
+  ): Promise<any> {
     try {
       const mailerSend = new MailerSend({
         apiKey: process.env.MAIL_SENDER_API_KEY,
@@ -16,8 +21,8 @@ export class MailSender {
       );
 
       const recipients = [
-        // new Recipient('anamul.ice14@gmail.com', 'Anamul'),
-        new Recipient('email2arjoy@gmail.com', 'Arman Reja joy'),
+        // new Recipient('anamul.ice14@gmail.com',),
+        new Recipient(recieptant, client),
       ];
       const cc = [new Recipient('your_cc@client.com', 'Your Client CC')];
       const bcc = [new Recipient('your_bcc@client.com', 'Your Client BCC')];
@@ -25,11 +30,8 @@ export class MailSender {
       const emailParams = new EmailParams()
         .setFrom(sentFrom)
         .setTo(recipients)
-        .setSubject('NestJs Boilerplate')
-        .setText('This is is test mail to check mail service in NestJs app')
-        .setHtml(
-          '<a href="https://github.com/mailersend/mailersend-nodejs">Docs</a>',
-        );
+        .setSubject(subject)
+        .setText(message);
 
       await mailerSend.email.send(emailParams);
     } catch (error) {
