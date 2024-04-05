@@ -79,4 +79,3 @@ http://localhost:8080/api
 ## Stay in touch
 
 - Author - [Anamul Haque]
-- LinkedIn - [LinkedIn](www.linkedin.com/in/md-anamul-haque94)
