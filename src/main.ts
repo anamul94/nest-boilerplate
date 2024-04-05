@@ -9,7 +9,7 @@ async function bootstrap() {
 
   //swagger config start
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Nest Boilerplate')
+    .setTitle('NestJS Boilerplate')
     .setDescription('Nest Boilerplate')
     .setVersion('1.0')
     .addBearerAuth({
