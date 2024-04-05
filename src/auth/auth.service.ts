@@ -1,3 +1,4 @@
+import { last } from 'rxjs';
 import { Tokens } from './types/';
 import {
   BadRequestException,
@@ -54,6 +55,20 @@ export class AuthService {
 
   async googleAuth(req) {
     console.log(req.user);
+    const { email, firstName, lastName } = req.user;
+    let user = await this.usersService.findUserByEmail(email);
+    if (!user) {
+      user = await this.usersService.createUserWithoutPassword({
+        email,
+        firstName,
+        lastName,
+      });
+      const access_token = await this.jwtService.signAsync({
+        email,
+        sub: user.id,
+      });
+      return { access_token };
+    }
   }
 
   async resetPassword(email: string, dto: ResetPasswordDto): Promise<string> {

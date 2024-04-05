@@ -24,7 +24,6 @@ import { User } from 'src/user/entities';
 import { Public } from './decorators';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
-import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Auth')
 @ApiBearerAuth()
@@ -49,7 +48,7 @@ export class AuthController {
   }
 
   @Get('/google-oauth')
-  @UseGuards(AuthGuard('google'))
+  @UseGuards(GoogleGuard)
   async googleAuth(@Request() req) {}
 
   @Get('/google-oauth/callback')

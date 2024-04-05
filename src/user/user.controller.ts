@@ -47,10 +47,15 @@ export class UserController {
   @Patch('/set-role')
   @ApiBody({ type: RoleUpdateDto })
   @ApiOkResponse({ type: User, isArray: true })
-  test(@Request() req, @Body() dto: RoleUpdateDto): Promise<User[]> {
+  setRoleToUser(@Request() req, @Body() dto: RoleUpdateDto): Promise<User[]> {
     if (req.user.role === RoleNames.ADMIN) {
       return this.UsersService.setUserRole(dto);
     }
     throw new UnauthorizedException();
+  }
+
+  @Get('/test')
+  test() {
+    return 'test';
   }
 }

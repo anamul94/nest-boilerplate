@@ -108,4 +108,12 @@ export class UsersService {
   async saveUser(user: User): Promise<User> {
     return this.userRepository.save(user);
   }
+
+  async createUserWithoutPassword({
+    email,
+    firstName,
+    lastName,
+  }): Promise<User> {
+    return this.userRepository.save({ email, firstName, lastName });
+  }
 }
