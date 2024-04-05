@@ -52,6 +52,10 @@ export class AuthService {
     return { access_token };
   }
 
+  async googleAuth(req) {
+    console.log(req.user);
+  }
+
   async resetPassword(email: string, dto: ResetPasswordDto): Promise<string> {
     try {
       const user = await this.usersService.findUserByEmail(email);

@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { JwtAuthGuards, LocalAuthGuard } from './guards';
+import { GoogleGuard, JwtAuthGuards, LocalAuthGuard } from './guards';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -24,6 +24,7 @@ import { User } from 'src/user/entities';
 import { Public } from './decorators';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Auth')
 @ApiBearerAuth()
@@ -45,6 +46,16 @@ export class AuthController {
   @ApiBody({ type: LoginDto })
   login(@Request() req): Promise<Tokens> {
     return this.authService.login(req.user);
+  }
+
+  @Get('/google-oauth')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Request() req) {}
+
+  @Get('/google-oauth/callback')
+  @UseGuards(GoogleGuard)
+  googleAuthRedirect(@Request() req) {
+    return this.authService.googleAuth(req);
   }
 
   @UseGuards(JwtAuthGuards)
