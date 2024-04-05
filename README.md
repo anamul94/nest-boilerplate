@@ -45,8 +45,8 @@ Create Role in DB manually
 # Prepare .env
 $ cp .env-example .env
 # set value according to your config
-# development
 
+# development
 $ npm run start
 
 # watch mode
