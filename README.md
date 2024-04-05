@@ -23,6 +23,10 @@
 <li>User Update</li>
 <li>JWT</li>
 <li>Set role to bulk user(Admin Only)</li>
+<li>Google OAuth</li>
+<li>Reset Password</li>
+<li>Forgot Password</li>
+<li>Mailsend(https://www.mailersend.com/)</li>
 <li>Swagger </li>
 
 </ul>
@@ -75,4 +79,4 @@ http://localhost:8080/api
 ## Stay in touch
 
 - Author - [Anamul Haque]
-- LinkedIn - [](www.linkedin.com/in/md-anamul-haque94)
+- LinkedIn - [LinkedIn](www.linkedin.com/in/md-anamul-haque94)
