@@ -39,10 +39,14 @@ $ npm install
 
 ## Running the app
 
+Create Role in DB manually
+
 ```bash
 # Prepare .env
 $ cp .env-example .env
+# set value according to your config
 # development
+
 $ npm run start
 
 # watch mode
