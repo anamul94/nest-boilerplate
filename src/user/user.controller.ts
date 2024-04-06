@@ -6,6 +6,8 @@ import {
   Get,
   Param,
   Patch,
+  Post,
+  Req,
   Request,
   UnauthorizedException,
   UseGuards,
@@ -56,6 +58,13 @@ export class UserController {
 
   @Get('/test')
   test() {
+    return 'test';
+  }
+
+  @Public()
+  @Post('/test')
+  testPost(@Req() req) {
+    console.log(req.body);
     return 'test';
   }
 }
