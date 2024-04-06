@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  nestjs_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+    environment:
+      PORT: 8080
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5434
+      DB_USER: postgres
+      DB_PASSWORD: 1234
+      DB_NAME: boilerplate
+      JWT_SECRET: eyJlbWFpbCI6ImEzQGdtYWlsLmNvbSIsInN1YiI6IjU1YzBlZDMwLTY1Y2UtNGI2OC04ZjUx
+      JWT_EXPIRATION: 3600000
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - '5434:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: boilerplate
