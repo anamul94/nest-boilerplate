@@ -6,6 +6,8 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { LoggingMiddleware } from './middlewares/logging.middleware';
+import { FileuploadController } from './fileupload/fileupload.controller';
+import { FileuploadModule } from './fileupload/fileupload.module';
 
 @Module({
   imports: [
@@ -19,8 +21,10 @@ import { LoggingMiddleware } from './middlewares/logging.middleware';
     TypeOrmModule.forRoot({
       ...dataSourceOptions,
     }),
+    FileuploadModule,
   ],
   providers: [],
+  controllers: [FileuploadController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
