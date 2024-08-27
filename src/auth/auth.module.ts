@@ -1,3 +1,4 @@
+import { FacebookStrategy } from './stragegies/facebook-oauth.strategy';
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsersModule } from 'src/user/user.module';
@@ -22,6 +23,7 @@ import { MailSender } from 'src/util/mailsend';
     LocalStrategy,
     JwtStrategy,
     GoogleStrategy,
+    FacebookStrategy,
     MailSender,
   ],
   exports: [AuthService],
