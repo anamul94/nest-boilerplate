@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -24,6 +25,7 @@ import { User } from 'src/user/entities';
 import { Public } from './decorators';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Auth')
 @ApiBearerAuth()
@@ -97,5 +99,16 @@ export class AuthController {
   @Post('/set-new-password')
   async setNewPassword(@Body() dto: ForgotPasswordDto): Promise<string> {
     return this.authService.setNewPassword(dto);
+  }
+
+  @Get('facebook')
+  @UseGuards(AuthGuard('facebook'))
+  async facebookAuth(@Req() req) {}
+
+  @Get('facebook/callback')
+  @UseGuards(AuthGuard('facebook'))
+  facebookAuthRedirect(@Req() req) {
+    console.log('faceboo');
+    return req.user;
   }
 }
