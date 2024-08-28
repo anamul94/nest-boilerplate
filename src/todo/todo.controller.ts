@@ -48,8 +48,10 @@ export class TodoController {
   }
 
   @Patch(':id')
+  @UsePipes(SetUserMetadataPipe)
   update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
-    return this.todoService.update(+id, updateTodoDto);
+    console.log(updateTodoDto);
+    return this.todoService.update(id, updateTodoDto);
   }
 
   @Delete(':id')

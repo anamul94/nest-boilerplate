@@ -20,11 +20,19 @@ export class TodoService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} todo`;
+    return this.todoRepository.findOneBy({ id: id });
   }
 
-  update(id: number, updateTodoDto: UpdateTodoDto) {
-    return `This action updates a #${id} todo`;
+  update(id: string, updateTodoDto: UpdateTodoDto) {
+    // const todo = this.todoRepository.findOneBy({ id: id });
+    // if (!todo) {
+    //   return `Todo with ID ${id} not found`;
+    // }
+    // return this.todoRepository.save({
+    //   ...todo,
+    //   ...updateTodoDto,
+    // });
+    return this.todoRepository.update(id, updateTodoDto);
   }
 
   remove(id: number) {

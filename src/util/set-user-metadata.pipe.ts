@@ -17,7 +17,7 @@ export class SetUserMetadataPipe implements PipeTransform {
     if (metadata.type === 'body') {
       console.log(this.req.method);
       const user = (this.req as any).user as ReqUser; // assuming req.user has a username field
-      if (!value.id) {
+      if (this.req.method === 'POST') {
         // New entity being created
         value.createdBy = user.userId;
       }

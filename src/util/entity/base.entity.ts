@@ -1,6 +1,14 @@
-import { Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 export class BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
