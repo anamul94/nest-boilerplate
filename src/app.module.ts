@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { LoggingMiddleware } from './middlewares/logging.middleware';
+import { TodoModule } from './todo/todo.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { LoggingMiddleware } from './middlewares/logging.middleware';
     TypeOrmModule.forRoot({
       ...dataSourceOptions,
     }),
+    TodoModule,
   ],
   providers: [],
 })
