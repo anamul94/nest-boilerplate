@@ -1,4 +1,4 @@
-import { BaseEntity } from 'src/util/entity/base.entity';
+import { BaseEntity } from 'src/common/entity/base.entity';
 import { Entity, Column, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('todos')

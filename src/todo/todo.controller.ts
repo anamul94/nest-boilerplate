@@ -15,7 +15,7 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { JwtAuthGuards } from 'src/auth/guards';
 import { Request } from 'express';
-import { SetUserMetadataPipe } from 'src/util/set-user-metadata.pipe';
+import { SetUserMetadataPipe } from 'src/common/pipes/set-user-metadata.pipe';
 import { REQUEST } from '@nestjs/core';
 
 @UseGuards(JwtAuthGuards)

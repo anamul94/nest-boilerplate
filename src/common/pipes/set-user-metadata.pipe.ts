@@ -7,7 +7,7 @@ import {
 
 import { Request } from 'express';
 import { REQUEST } from '@nestjs/core';
-import { ReqUser } from './entity/req-user.interface';
+import { AuthUser } from '../interfaces/auth-user';
 
 @Injectable()
 export class SetUserMetadataPipe implements PipeTransform {
@@ -16,7 +16,7 @@ export class SetUserMetadataPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
     if (metadata.type === 'body') {
       console.log(this.req.method);
-      const user = (this.req as any).user as ReqUser; // assuming req.user has a username field
+      const user = (this.req as any).user as AuthUser; // assuming req.user has a username field
       if (this.req.method === 'POST') {
         // New entity being created
         value.createdBy = user.userId;
