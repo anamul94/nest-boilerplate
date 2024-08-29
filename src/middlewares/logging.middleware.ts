@@ -10,7 +10,6 @@ export class LoggingMiddleware implements NestMiddleware {
     const reqTime = new Date().getTime();
     res.on('finish', () => {
       const { statusCode } = res;
-      console.log(res);
       const resTime = new Date().getTime();
       if (statusCode === 201 || statusCode === 200) {
         this.logger.log(
