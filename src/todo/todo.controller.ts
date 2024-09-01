@@ -9,6 +9,7 @@ import {
   UseGuards,
   UsePipes,
   Inject,
+  Query,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
@@ -17,6 +18,8 @@ import { JwtAuthGuards } from 'src/auth/guards';
 import { Request } from 'express';
 import { SetUserMetadataPipe } from 'src/common/pipes/set-user-metadata.pipe';
 import { REQUEST } from '@nestjs/core';
+import { PaginationDto } from 'src/common/pagination/pagination.dto';
+import { Public } from 'src/auth/decorators';
 
 @UseGuards(JwtAuthGuards)
 @Controller('todo')
@@ -37,9 +40,11 @@ export class TodoController {
   // create(@UserMetadata() @Body() createTodoDto: CreateTodoDto) {
   //   return this.todoService.create(createTodoDto);
   // }
+  @Public()
   @Get()
-  findAll() {
-    return this.todoService.findAll();
+  async findAll(@Query() paginationDto: PaginationDto) {
+    console.log(paginationDto);
+    return this.todoService.findAll(paginationDto);
   }
 
   @Get(':id')

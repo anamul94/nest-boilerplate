@@ -4,6 +4,8 @@ import { UpdateTodoDto } from './dto/update-todo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Todo } from './entities/todo.entity';
 import { TodoRepository } from './todo.repository';
+import { PaginationDto } from 'src/common/pagination/pagination.dto';
+import { paginate } from 'src/common/pagination/pagination.service';
 
 @Injectable()
 export class TodoService {
@@ -15,8 +17,8 @@ export class TodoService {
     return this.todoRepository.save(createTodoDto);
   }
 
-  findAll() {
-    return `This action returns all todo`;
+  async findAll(paginationDto: PaginationDto): Promise<any> {
+    return paginate(this.todoRepository, paginationDto, 'todos');
   }
 
   findOne(id: number) {
