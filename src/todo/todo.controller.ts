@@ -10,6 +10,7 @@ import {
   UsePipes,
   Inject,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
@@ -20,6 +21,7 @@ import { SetUserMetadataPipe } from 'src/common/pipes/set-user-metadata.pipe';
 import { REQUEST } from '@nestjs/core';
 import { PaginationDto } from 'src/common/pagination/pagination.dto';
 import { Public } from 'src/auth/decorators';
+import { LoggingInterceptor } from 'src/common/intercepotors/logging.interceptor';
 
 @UseGuards(JwtAuthGuards)
 @Controller('todo')
