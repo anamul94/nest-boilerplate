@@ -43,7 +43,7 @@ export class TodoController {
   @Public()
   @Get()
   async findAll(@Query() paginationDto: PaginationDto) {
-    console.log(+paginationDto.page);
+    console.log(paginationDto);
     return this.todoService.findAll(paginationDto);
   }
 
