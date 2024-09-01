@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { LoggingMiddleware } from './middlewares/logging.middleware';
 import { TodoModule } from './todo/todo.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { TodoModule } from './todo/todo.module';
       ...dataSourceOptions,
     }),
     TodoModule,
+    CategoryModule,
   ],
   providers: [],
 })
