@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseInterceptors } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,6 +8,7 @@ import { PaginationDto } from 'src/common/pagination/pagination.dto';
 import { paginate } from 'src/common/pagination/pagination.service';
 import { PageData } from 'src/common/pagination/pagedata.dto';
 import { classToPlain } from '@nestjs/class-transformer';
+import { LoggingInterceptor } from 'src/common/intercepotors/logging.interceptor';
 
 @Injectable()
 export class TodoService {

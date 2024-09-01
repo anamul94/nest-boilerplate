@@ -22,9 +22,11 @@ import { REQUEST } from '@nestjs/core';
 import { PaginationDto } from 'src/common/pagination/pagination.dto';
 import { Public } from 'src/auth/decorators';
 import { LoggingInterceptor } from 'src/common/intercepotors/logging.interceptor';
+import { ControllerInterceptor } from 'src/common/intercepotors/controller-logging.interceptor';
 
 @UseGuards(JwtAuthGuards)
 @Controller('todo')
+@UseInterceptors(ControllerInterceptor)
 export class TodoController {
   constructor(
     private readonly todoService: TodoService,
