@@ -6,6 +6,7 @@ import { Todo } from './entities/todo.entity';
 import { TodoRepository } from './todo.repository';
 import { PaginationDto } from 'src/common/pagination/pagination.dto';
 import { paginate } from 'src/common/pagination/pagination.service';
+import { PageData } from 'src/common/pagination/pagedata.dto';
 
 @Injectable()
 export class TodoService {
@@ -17,8 +18,18 @@ export class TodoService {
     return this.todoRepository.save(createTodoDto);
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<any> {
-    return paginate(this.todoRepository, paginationDto, 'todos');
+  async findAll(paginationDto: PaginationDto): Promise<PageData<Todo>> {
+    const { data, total, page, limit } = await paginate(
+      this.todoRepository,
+      paginationDto,
+      'todos',
+    );
+    return {
+      items: data,
+      totalItems: total,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   findOne(id: number) {
