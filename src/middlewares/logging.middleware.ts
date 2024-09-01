@@ -11,13 +11,14 @@ export class LoggingMiddleware implements NestMiddleware {
     res.on('finish', () => {
       const { statusCode } = res;
       const resTime = new Date().getTime();
-      if (statusCode === 201 || statusCode === 200) {
-        this.logger.log(
-          `${method} ${url} ${statusCode} ${resTime - reqTime}ms`,
-        );
-      } else {
-        this.logger.log(`${method} ${url} ${statusCode}`);
-      }
+      // if (statusCode === 201 || statusCode === 200) {
+      //   this.logger.log(
+      //     `${method} ${url} ${statusCode} ${resTime - reqTime}ms`,
+      //   );
+      // } else {
+      //   this.logger.log(`${method} ${url} ${statusCode}`);
+      // }
+      this.logger.log(`${method} ${url} ${statusCode} ${resTime - reqTime}ms`);
     });
     next();
   }

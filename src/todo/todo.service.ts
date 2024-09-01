@@ -7,6 +7,7 @@ import { TodoRepository } from './todo.repository';
 import { PaginationDto } from 'src/common/pagination/pagination.dto';
 import { paginate } from 'src/common/pagination/pagination.service';
 import { PageData } from 'src/common/pagination/pagedata.dto';
+import { classToPlain } from '@nestjs/class-transformer';
 
 @Injectable()
 export class TodoService {
@@ -24,6 +25,12 @@ export class TodoService {
       paginationDto,
       'todos',
     );
+    // return classToPlain({
+    //   items: data,
+    //   totalItems: total,
+    //   currentPage: page,
+    //   totalPages: Math.ceil(total / limit),
+    // });
     return {
       items: data,
       totalItems: total,
