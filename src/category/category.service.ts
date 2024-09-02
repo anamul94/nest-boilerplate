@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category } from './entities/category.entity';
 import { CategoryResponseDto } from './dto/category.response.dto';
+import { ICategoryResponse } from './interfaces/category.interface';
 
 @Injectable()
 export class CategoryService {
@@ -12,7 +13,9 @@ export class CategoryService {
     private readonly categoryRepository: Repository<Category>,
   ) {}
 
-  async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
+  async create(
+    createCategoryDto: CreateCategoryDto,
+  ): Promise<CategoryResponseDto> {
     const { title, description, parentId, createdBy } = createCategoryDto;
     console.log('createCategoryDto', createCategoryDto);
 
@@ -32,13 +35,23 @@ export class CategoryService {
       }
     }
 
-    return await this.categoryRepository.save(category);
+    const savedCat = await this.categoryRepository.save(category);
+    let resp: CategoryResponseDto = new CategoryResponseDto(savedCat);
+
+    return resp;
+    // return savedCat;
   }
 
   async findAll(): Promise<CategoryResponseDto[]> {
-    return this.categoryRepository.find({
+    const allCat = await this.categoryRepository.find({
       relations: ['parent', 'children'],
     });
+
+    let resp: CategoryResponseDto[] = allCat.map(
+      (cat) => new CategoryResponseDto(cat),
+    );
+
+    return resp;
   }
 
   async findOne(id: number): Promise<Category> {

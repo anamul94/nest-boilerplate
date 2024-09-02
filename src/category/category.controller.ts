@@ -14,6 +14,7 @@ import { CategoryResponseDto } from './dto/category.response.dto';
 import { JwtAuthGuards } from 'src/auth/guards';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SetUserMetadataPipe } from 'src/common/pipes/set-user-metadata.pipe';
+import { ICategoryResponse } from './interfaces/category.interface';
 
 @ApiTags('Categories')
 @ApiBearerAuth()
@@ -26,13 +27,16 @@ export class CategoryController {
   @UsePipes(SetUserMetadataPipe)
   async create(
     @Body() createCategoryDto: CreateCategoryDto,
-  ): Promise<Category> {
-    return this.categoryService.create(createCategoryDto);
+  ): Promise<CategoryResponseDto> {
+    const savedCat: ICategoryResponse =
+      await this.categoryService.create(createCategoryDto);
+    return savedCat;
   }
 
   @Get()
   async findAll(): Promise<CategoryResponseDto[]> {
-    return this.categoryService.findAll();
+    const allCat: ICategoryResponse[] = await this.categoryService.findAll();
+    return allCat;
   }
 
   @Get(':id')
