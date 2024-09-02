@@ -1,3 +1,4 @@
+import { BaseEntity } from 'src/common/entity/base.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,10 +8,7 @@ import {
 } from 'typeorm';
 
 @Entity('categories')
-export class Category {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Category extends BaseEntity {
   @Column({ type: 'varchar', length: 255, nullable: false })
   title: string;
 

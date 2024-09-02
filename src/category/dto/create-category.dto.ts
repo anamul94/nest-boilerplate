@@ -7,6 +7,11 @@ export class CreateCategoryDto {
   description?: string;
   @ApiProperty({ required: false })
   parentId?: number;
+
+  //   @ApiProperty({ required: false })
+  createdBy: string;
+  //   @ApiProperty({ required: false })
+  updatedBy: string;
 }
 
 export class CategoryDto {

@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category } from './entities/category.entity';
+import { CategoryResponseDto } from './dto/category.response.dto';
 
 @Injectable()
 export class CategoryService {
@@ -12,12 +13,13 @@ export class CategoryService {
   ) {}
 
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
-    const { title, description, parentId } = createCategoryDto;
-    console.log('createCategoryDto', parentId);
+    const { title, description, parentId, createdBy } = createCategoryDto;
+    console.log('createCategoryDto', createCategoryDto);
 
     const category = new Category();
     category.title = title;
     category.description = description || null;
+    category.createdBy = createdBy;
 
     if (parentId) {
       const parent = await this.categoryRepository.findOne({
@@ -26,14 +28,14 @@ export class CategoryService {
       if (parent) {
         category.parent = parent;
       } else {
-        throw new Error('Parent category not found');
+        throw new BadRequestException('Parent category not found');
       }
     }
 
     return await this.categoryRepository.save(category);
   }
 
-  async findAll(): Promise<Category[]> {
+  async findAll(): Promise<CategoryResponseDto[]> {
     return this.categoryRepository.find({
       relations: ['parent', 'children'],
     });
