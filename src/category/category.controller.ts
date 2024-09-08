@@ -40,7 +40,7 @@ export class CategoryController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number): Promise<Category> {
+  async findOne(@Param('id') id: number): Promise<CategoryResponseDto> {
     return this.categoryService.findOne(id);
   }
 }

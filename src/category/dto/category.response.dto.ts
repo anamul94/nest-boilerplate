@@ -22,9 +22,6 @@ export class CategoryResponseDto {
     this.id = category.id;
     this.title = category.title;
     this.description = category.description;
-    this.parent = category.parent
-      ? new CategoryResponseDto(category.parent)
-      : undefined;
     this.children = category.children
       ? category.children.map((child) => new CategoryResponseDto(child))
       : [];

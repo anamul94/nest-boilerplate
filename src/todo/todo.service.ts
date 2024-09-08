@@ -6,9 +6,10 @@ import { Todo } from './entities/todo.entity';
 import { TodoRepository } from './todo.repository';
 import { PaginationDto } from 'src/common/pagination/pagination.dto';
 import { paginate } from 'src/common/pagination/pagination.service';
+import { ITodoService } from './todo.service.interface';
 
 @Injectable()
-export class TodoService {
+export class TodoService implements ITodoService {
   constructor(
     @InjectRepository(Todo) private readonly todoRepository: TodoRepository,
   ) {}

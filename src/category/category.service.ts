@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -42,22 +46,61 @@ export class CategoryService {
     // return savedCat;
   }
 
+  // async findAll(): Promise<CategoryResponseDto[]> {
+  //   const allCat = await this.categoryRepository.find({
+  //     relations: ['parent', 'children'],
+  //   });
+
+  //   let resp: CategoryResponseDto[] = allCat.map(
+  //     (cat) => new CategoryResponseDto(cat),
+  //   );
+
+  //   return resp;
+  // }
+
   async findAll(): Promise<CategoryResponseDto[]> {
-    const allCat = await this.categoryRepository.find({
-      relations: ['parent', 'children'],
+    const rootCategories = await this.categoryRepository.find({
+      where: { parent: null }, // Get only root categories (categories without a parent)
+      relations: ['children'], // Load the immediate children
     });
 
-    let resp: CategoryResponseDto[] = allCat.map(
-      (cat) => new CategoryResponseDto(cat),
-    );
+    // Recursively load all the children for each root category
+    for (const category of rootCategories) {
+      await this.loadChildrenRecursively(category);
+    }
 
-    return resp;
+    return rootCategories.map((category) => new CategoryResponseDto(category));
   }
 
-  async findOne(id: number): Promise<Category> {
-    return this.categoryRepository.findOne({
+  // Recursive function to load all children for a category
+  private async loadChildrenRecursively(category: Category): Promise<void> {
+    if (category.children && category.children.length > 0) {
+      for (const child of category.children) {
+        const loadedChild = await this.categoryRepository.findOne({
+          where: { id: child.id },
+          relations: ['children'], // Load children for the child category
+        });
+
+        child.children = loadedChild?.children ?? []; // Update the children list
+        await this.loadChildrenRecursively(child); // Recursively load the children's children
+      }
+    }
+  }
+
+  async findOne(id: number): Promise<CategoryResponseDto> {
+    const category = await this.categoryRepository.findOne({
       where: { id },
-      relations: ['parent', 'children'],
+      relations: ['children'], // Load the immediate children of the category
     });
+
+    if (!category) {
+      throw new NotFoundException(`Category with ID ${id} not found`);
+    }
+
+    // Recursively load all the children
+    await this.loadChildrenRecursively(category);
+
+    // Return the category as a CategoryResponseDto
+    return new CategoryResponseDto(category);
   }
 }

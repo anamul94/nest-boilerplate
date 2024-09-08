@@ -11,4 +11,10 @@ export class Todo extends BaseEntity {
 
   @Column({ type: 'boolean', default: false })
   isCompleted: boolean;
+
+  @Column({ name: 'f_name', type: 'varchar', length: 255 })
+  f_name: string;
+
+  @Column({ name: 'l_names', type: 'varchar', length: 255 })
+  lastName: string;
 }

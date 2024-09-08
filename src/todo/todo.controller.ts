@@ -20,6 +20,7 @@ import { SetUserMetadataPipe } from 'src/common/pipes/set-user-metadata.pipe';
 import { REQUEST } from '@nestjs/core';
 import { PaginationDto } from 'src/common/pagination/pagination.dto';
 import { Public } from 'src/auth/decorators';
+import { ITodoService } from './todo.service.interface';
 
 @UseGuards(JwtAuthGuards)
 @Controller('todo')
