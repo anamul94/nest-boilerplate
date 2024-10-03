@@ -13,6 +13,8 @@ import { SignupDto } from './dto/signup.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { MailSender } from 'src/util/mailsend';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { InjectRedis } from '@nestjs-modules/ioredis';
+import { Redis } from 'ioredis';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +25,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private mailSender: MailSender,
+    @InjectRedis() private readonly redis: Redis,
   ) {
     let OTP: Record<number, string> = {};
   }
@@ -51,6 +54,20 @@ export class AuthService {
     const payload = { email: user.email, sub: user.id, role: role };
     const access_token = await this.jwtService.signAsync(payload);
     return { access_token };
+  }
+
+  async logout(token: string): Promise<void> {
+    const decoded: any = this.jwtService.decode(token);
+    const tokenExpiry = decoded.exp * 1000; // Convert seconds to milliseconds
+
+    // Calculate the remaining TTL for the token
+    const currentTime = Date.now();
+    const ttl = tokenExpiry - currentTime;
+
+    // If token hasn't expired, store it in Redis with its TTL
+    if (ttl > 0) {
+      await this.redis.set(token, 'blacklisted', 'PX', ttl);
+    }
   }
 
   async googleAuth(req) {
@@ -153,5 +170,10 @@ export class AuthService {
       console.log(error);
       throw new BadRequestException();
     }
+  }
+
+  async isTokenBlacklisted(userId: number, token: string): Promise<boolean> {
+    const blacklisted = await this.redis.get(`bl_${userId}_${token}`);
+    return !!blacklisted;
   }
 }

@@ -7,19 +7,28 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { LoggingMiddleware } from './middlewares/logging.middleware';
 import { TodoModule } from './todo/todo.module';
+import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
       load: [configuration],
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      useFactory: (configService: ConfigService) =>
+        configService.get('database'),
+      inject: [ConfigService],
+    }),
+    RedisModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        type: 'single',
+        options: configService.get('redis'),
+      }),
+      inject: [ConfigService],
     }),
     AuthModule,
     UsersModule,
-    TypeOrmModule.forRoot({
-      ...dataSourceOptions,
-    }),
     TodoModule,
   ],
   providers: [],

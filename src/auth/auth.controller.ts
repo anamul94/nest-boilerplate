@@ -8,6 +8,7 @@ import {
   Post,
   Req,
   Request,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -18,6 +19,7 @@ import {
   ApiOkResponse,
   ApiResponse,
   ApiTags,
+  ApiCookieAuth,
 } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
@@ -29,6 +31,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Auth')
 @ApiBearerAuth()
+@ApiCookieAuth()
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -45,8 +48,25 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   @ApiBody({ type: LoginDto })
-  login(@Request() req): Promise<Tokens> {
-    return this.authService.login(req.user);
+  async login(@Request() req, @Res() res): Promise<Tokens> {
+    const tokens = await this.authService.login(req.user);
+    res.cookie('Bearer', tokens.access_token);
+    return res.send(tokens);
+  }
+
+  @ApiCookieAuth('Bearer')
+  @Get('/logout/:token')
+  @ApiOkResponse({ type: String, description: 'Logout successful' })
+  async logout(
+    @Req() req,
+    @Res({ passthrough: true }) res,
+  ): Promise<{ message: string }> {
+    const token = req.params.token; // This is set by JwtAuthGuards
+    console.log(req.cookies);
+    // const token = req.cookies['Bearer'];
+    await this.authService.logout(token);
+    res.clearCookie('Bearer', { httpOnly: true, secure: true });
+    return { message: 'Logged out successfully' };
   }
 
   @Get('/google-oauth')
