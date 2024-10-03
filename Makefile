@@ -1,20 +1,11 @@
-dev:
-	npm run start:dev
-
 build:
-	npm run build
+	docker compose build
 
 start:
-	npm run start
+	docker compose up -d
 
-test:
-	npm run test
+stop:
+	docker compose down
 
-lint:
-	npm run lint
-
-format:
-	npm run format
-
-clean:
-	rm -rf dist
+logs:
+	docker compose logs

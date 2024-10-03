@@ -9,6 +9,7 @@ export default () => ({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     synchronize: process.env.DB_SYNCHRONIZE === 'true',
+    // synchronize: true,
     entities: ['dist/**/*.entity.js'],
     migrations: ['dist/db/migrations/*.js'],
   },
