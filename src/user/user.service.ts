@@ -7,6 +7,7 @@ import { RoleRepository } from './role.repository';
 import { SignupDto } from 'src/auth/dto/signup.dto';
 import { RoleUpdateDto } from './dto/role.update.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ERole } from './entities/role.enum';
 
 @Injectable()
 export class UsersService {
@@ -15,8 +16,13 @@ export class UsersService {
     @InjectRepository(Role) private readonly roleRepository: RoleRepository,
   ) {}
 
-  async getRoleByName(roleName: string): Promise<Role> {
-    return this.roleRepository.findOneBy({ roleName: roleName });
+  async getRoleByName(roleName: ERole): Promise<Role> {
+    return this.roleRepository.findOneBy({ roleName });
+  }
+
+  async createRole(roleName: ERole): Promise<Role> {
+    const newRole = this.roleRepository.create({ roleName });
+    return this.roleRepository.save(newRole);
   }
 
   async createUser(dto: SignupDto): Promise<User> {

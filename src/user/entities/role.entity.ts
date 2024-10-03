@@ -5,7 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { RoleNames } from './role-names.enum';
+import { ERole } from './role.enum';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
@@ -15,7 +15,7 @@ export class Role {
   id: Number;
 
   @ApiProperty()
-  @Column({ type: 'enum', enum: RoleNames })
+  @Column({ type: 'enum', enum: ERole })
   roleName: string;
 
   // @OneToMany(() => User, (user) => user.role)

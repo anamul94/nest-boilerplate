@@ -8,6 +8,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { LoggingMiddleware } from './middlewares/logging.middleware';
 import { TodoModule } from './todo/todo.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
+import { InitModule } from './common/module/init.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { RedisModule } from '@nestjs-modules/ioredis';
     AuthModule,
     UsersModule,
     TodoModule,
+    InitModule,
   ],
   providers: [],
 })

@@ -20,7 +20,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtAuthGuards } from 'src/auth/guards';
-import { Role, RoleNames, User } from './entities';
+import { Role, ERole, User } from './entities';
 import { Public } from 'src/auth/decorators';
 import { RoleUpdateDto } from './dto/role.update.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -50,7 +50,7 @@ export class UserController {
   @ApiBody({ type: RoleUpdateDto })
   @ApiOkResponse({ type: User, isArray: true })
   setRoleToUser(@Request() req, @Body() dto: RoleUpdateDto): Promise<User[]> {
-    if (req.user.role === RoleNames.ADMIN) {
+    if (req.user.role === ERole.ADMIN) {
       return this.UsersService.setUserRole(dto);
     }
     throw new UnauthorizedException();
