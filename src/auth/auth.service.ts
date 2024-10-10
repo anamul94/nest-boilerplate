@@ -31,21 +31,73 @@ export class AuthService {
   }
 
   async signUp(dto: SignupDto): Promise<User> {
-    // if (!dto) {
-    //   throw new BadRequestException();
-    // }
     const hashedPass = await argon.hash(dto.password);
     dto.password = hashedPass;
 
-    return await this.usersService.createUser(dto);
+    const user = await this.usersService.createUser(dto);
+
+    // Save email, hashed password, role, and id to Redis
+    await this.saveUserCredentialsToRedis(
+      user.email,
+      hashedPass,
+      user.id,
+      user.role?.roleName,
+    );
+
+    return user;
+  }
+
+  private async saveUserCredentialsToRedis(
+    email: string,
+    hashedPassword: string,
+    id: string,
+    role?: string,
+  ): Promise<void> {
+    const userInfo = JSON.stringify({
+      id,
+      password: hashedPassword,
+      role: role || null,
+    });
+
+    await this.redis.set(
+      email,
+      userInfo,
+      'EX',
+      86400, // Expire after 24 hours (86400 seconds)
+    );
   }
 
   async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.usersService.findUserByEmailWithRole(email);
-    if (user && (await argon.verify(user.password, pass))) {
-      const { password, ...result } = user;
-      return result;
+    // First, check Redis for the user's credentials
+    const redisUserInfo = await this.redis.get(email);
+
+    if (redisUserInfo) {
+      const {
+        id,
+        password: redisHashedPassword,
+        role: redisRole,
+      } = JSON.parse(redisUserInfo);
+      // If found in Redis, verify the password
+      if (await argon.verify(redisHashedPassword, pass)) {
+        // Return the user info directly from Redis
+        return { id, email, role: redisRole };
+      }
+    } else {
+      // If not found in Redis, check the database
+      const user = await this.usersService.findUserByEmailWithRole(email);
+      if (user && (await argon.verify(user.password, pass))) {
+        // If valid, store in Redis for future checks
+        await this.saveUserCredentialsToRedis(
+          user.email,
+          user.password,
+          user.id,
+          user.role?.roleName,
+        );
+        const { password, ...result } = user;
+        return result;
+      }
     }
+
     return null;
   }
 
