@@ -27,7 +27,7 @@ export class PaymentController {
   constructor() {}
 
   @Get('/init/:orderId/:amount')
-  //   @Redirect()
+  @Redirect()
   async initializePayment(
     @Param('orderId') orderId: string,
     @Param('amount') amount: number,
@@ -65,9 +65,11 @@ export class PaymentController {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
     }
   }
+  @Redirect()
   @Post('/success')
   async success(@Req() req: Request, @Res() res) {
     // console.log('success: ', req.body);
+    res.redirect('https://vps.mobarakit.com/');
     res.status(HttpStatus.OK).send(req.body);
   }
 
