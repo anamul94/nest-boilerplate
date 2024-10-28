@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpStatus,
@@ -14,6 +15,7 @@ import { Request } from 'express';
 import { Public } from 'src/auth/decorators';
 import { JwtAuthGuards } from 'src/auth/guards';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { BkashService } from './bkash/bkash.service';
 
 @ApiTags('Payment')
 // @ApiBearerAuth()
@@ -24,7 +26,7 @@ export class PaymentController {
   private readonly storePassword = 'anamu66113512deb64@ssl';
   private readonly isLive = false; // true for live, false for sandbox
 
-  constructor() {}
+  constructor(private readonly bkashService: BkashService) {}
 
   @Get('/init/:orderId/:amount')
   @Redirect()
@@ -83,5 +85,25 @@ export class PaymentController {
   async ipn(@Req() req: Request, @Res() res) {
     console.log('success: ', req.body);
     res.status(HttpStatus.OK).send(req.body);
+  }
+
+  // bkash
+  @Get('create/:orderId/:amount')
+  async createPayment(
+    @Param('orderId') orderId: string,
+    @Param('amount') amount: string,
+  ) {
+    return this.bkashService.createPayment(Number(amount), orderId);
+  }
+
+
+  @Post('execute/:paymentID')
+  async executePayment(@Param('paymentID') paymentID: string) {
+    return this.bkashService.executePayment(paymentID);
+  }
+
+  @Post('query/:paymentID')
+  async queryPayment(@Param('paymentID') paymentID: string) {
+    return this.bkashService.queryPayment(paymentID);
   }
 }
